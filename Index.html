@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Nivora RP Store</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#000;
+color:#fff;
+}
+
+.bg{
+position:fixed;
+inset:0;
+background:url('https://i.imgur.com/8Z7X8ZL.jpeg') center/cover no-repeat;
+filter:brightness(.25);
+z-index:-1;
+}
+
+.container{max-width:900px;margin:auto;padding:20px}
+
+.title{
+text-align:center;
+font-size:42px;
+font-weight:900;
+text-shadow:0 0 15px #ff00ff;
+}
+
+.box{
+background:#111;
+padding:15px;
+border-radius:12px;
+margin-bottom:10px;
+}
+
+.btn{
+padding:10px;
+border:none;
+border-radius:8px;
+font-weight:800;
+cursor:pointer;
+margin:4px;
+}
+
+.neon{background:linear-gradient(90deg,#ff00ff,#00ffff)}
+.gold{background:gold}
+.green{background:#25d366}
+.red{background:#ff4444;color:#fff}
+
+.cart{
+position:fixed;
+right:10px;
+top:10px;
+background:#111;
+padding:10px;
+border-radius:10px;
+width:220px;
+}
+
+select{
+width:100%;
+padding:8px;
+border-radius:8px;
+background:#222;
+color:#fff;
+border:none;
+margin-top:5px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="container">
+
+<h1 class="title">NIVORA RP STORE</h1>
+
+<!-- CASH -->
+<div class="box">
+<h3>💵 CASH (1000 = R$1)</h3>
+
+<button class="btn red" onclick="cash--,update()">-</button>
+<span id="cash">1000</span>
+<button class="btn green" onclick="cash++,update()">+</button>
+
+<button class="btn neon" onclick="addCash()">Adicionar CASH</button>
+</div>
+
+<!-- COINS -->
+<div class="box">
+<h3>🪙 COINS (1 = R$10)</h3>
+
+<button class="btn red" onclick="coins--,update()">-</button>
+<span id="coins">1</span>
+<button class="btn green" onclick="coins++,update()">+</button>
+
+<button class="btn neon" onclick="addCoins()">Adicionar COINS</button>
+</div>
+
+<!-- VIP NORMAL -->
+<div class="box">
+<h3>👑 VIP NORMAL</h3>
+
+<button class="btn gold" onclick="addVIP('7dias',20)">7 DIAS - R$20</button>
+<button class="btn gold" onclick="addVIP('1mes',50)">1 MÊS - R$50</button>
+<button class="btn gold" onclick="addVIP('3meses',120)">3 MESES - R$120</button>
+</div>
+
+<!-- VIP CARO -->
+<div class="box">
+<h3>🔥 VIP SUPREMO (WHATSAPP)</h3>
+
+<a class="btn green" href="https://wa.me/5544991148268" target="_blank">7AnjoX</a>
+<a class="btn green" href="https://wa.me/5534991116468" target="_blank">7BielX</a>
+
+<p>Negociação direta com os donos</p>
+</div>
+
+</div>
+
+<!-- CARRINHO -->
+<div class="cart">
+🛒 Carrinho<br>
+Total: R$ <span id="total">0</span>
+
+<br><br>
+
+👤 Vendedor:
+<select id="seller">
+<option value="anjo">7AnjoX</option>
+<option value="biel">7BielX</option>
+</select>
+
+<button class="btn neon" onclick="finalizar()">Finalizar</button>
+</div>
+
+<script>
+
+let cash=1000;
+let coins=1;
+
+let total=0;
+let cart=[];
+
+// CASH
+function addCash(){
+let price=(cash/1000)*1;
+cart.push(`Cash: ${cash} R$${price.toFixed(2)}`);
+total+=price;
+updateTotal();
+}
+
+// COINS
+function addCoins(){
+let price=coins*10;
+cart.push(`Coins: ${coins} R$${price}`);
+total+=price;
+updateTotal();
+}
+
+// VIP NORMAL
+function addVIP(tipo,valor){
+cart.push(`VIP ${tipo} R$${valor}`);
+total+=valor;
+updateTotal();
+}
+
+// UPDATE
+function update(){
+document.getElementById("cash").innerText=cash;
+document.getElementById("coins").innerText=coins;
+}
+
+// TOTAL
+function updateTotal(){
+document.getElementById("total").innerText=total.toFixed(2);
+}
+
+// FINALIZAR
+function finalizar(){
+
+if(cart.length===0)return;
+
+let seller=document.getElementById("seller").value;
+
+let msg="🛒 COMPRA NIVORA RP%0A%0A";
+
+cart.forEach(i=>{
+msg+=i+"%0A";
+});
+
+msg+=`%0A💰 TOTAL: R$${total.toFixed(2)}`;
+msg+=`%0A👤 VENDEDOR: ${seller}`;
+
+let link = seller==="biel"
+?"https://wa.me/5534991116468?text="
+:"https://wa.me/5544991148268?text=";
+
+window.open(link+encodeURIComponent(msg),"blank");
+
+cart=[];
+total=0;
+updateTotal();
+}
+
+update();
+
+</script>
+
+</body>
+</html>
